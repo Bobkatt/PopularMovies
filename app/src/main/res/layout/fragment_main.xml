@@ -1,0 +1,18 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainFragment">
+
+    <GridView
+        style="@style/MovieListStyle"
+        android:id="@+id/grid_view_movie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:numColumns="@integer/grid_columns"
+        android:stretchMode="columnWidth">
+    </GridView>
+
+</FrameLayout>

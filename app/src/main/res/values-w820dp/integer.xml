@@ -1,0 +1,6 @@
+<resources>
+
+    <item name="grid_columns" type="integer">3</item>
+    <item name="grid_items" type="integer">18</item>
+
+</resources>

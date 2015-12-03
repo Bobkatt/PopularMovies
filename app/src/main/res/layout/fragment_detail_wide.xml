@@ -1,0 +1,100 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.popularmovies.fragments.DetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/text_view_title"
+            style="@style/MovieDetailTitle">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:id="@+id/image_view_detail_poster"
+                style="@style/MovieDetailPoster">
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/text_view_release_date"
+                    style="@style/MovieDetailValues">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/text_view_run_time"
+                    style="@style/MovieDetailValues">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/text_view_rating"
+                    style="@style/MovieDetailValues">
+                </TextView>
+
+                <Button
+                    android:id="@+id/button_favorite"
+                    style="@style/MovieDetailFavourite">
+                </Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_view_overview"
+            style="@style/MovieDetailValues">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/MovieDetailExtras"
+            android:text="@string/trailers_header">
+        </TextView>
+
+        <ListView
+            android:id="@+id/list_view_trailer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/MovieDetailExtras"
+            android:text="@string/reviews_header">
+        </TextView>
+
+        <ListView
+            android:id="@+id/list_view_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView >
+
+    </LinearLayout>
+
+</ScrollView>

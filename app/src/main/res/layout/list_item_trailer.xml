@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.DetailActivity">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="32dp"
+        android:scaleType="fitCenter"
+        android:id="@+id/image_view_play_trailer">
+    </ImageView>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="6"
+        android:layout_height="32dp"
+        android:id="@+id/text_view_trailer_detail"
+        style="@style/MovieDetailValues"
+        android:gravity="center_vertical|start">
+    </TextView>
+
+</LinearLayout>

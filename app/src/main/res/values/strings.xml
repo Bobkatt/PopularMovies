@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_movie_details">Movie Detail</string>
+    <string name="title_settings">Sort Order"</string>
+    <string name="trailers_header">Trailers</string>
+    <string name="reviews_header">Reviews</string>
+
+    <!--Sort by Options-->
+    <string name="pref_sort_by_default">Most popular</string>
+    <string name="pref_sort_by_label">Sort by</string>
+    <string name="pref_sort_by_key">sortby</string>
+    <string name="pref_sort_by_popular">Most popular</string>
+    <string name="pref_sort_by_rating">Highest rated</string>
+    <string name="pref_sort_by_favourite">Favourite</string>
+    <string name="pref_sort_by_label_popular">Most popular</string>
+    <string name="pref_sort_by_label_rating">Highest rating</string>
+    <string name="pref_sort_by_label_favourite">Favourite</string>
+
+    <!--URL's-->
+    <string name="movie_sort_by_url">http://api.themoviedb.org/3/discover/movie?</string>
+    <string name="movie_detail_url">http://api.themoviedb.org/3/movie/</string>
+    <string name="movie_most_popular">popularity.desc</string>
+    <string name="movie_rating">vote_average.desc</string>
+    <string name="movie_db_poster_url">http://image.tmdb.org/t/p/w185/</string>
+    <string name="youtube_base_url">https://www.youtube.com/watch?v=</string>
+
+    <!-- Api Strings add an api key here before compiling and running-->
+    <string name="api_key"></string>
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">popularmovies.example.com</string>
+    <string name="content_authority">com.example.android.popularmovies</string>
+
+    <!-- Favourites button -->
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="remove_from_favourites">Remove from Favorites</string>
+
+</resources>

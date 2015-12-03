@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.android.popularmovies" >
+
+    <uses-permission
+        android:name="android.permission.INTERNET">
+    </uses-permission>
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS">
+    </uses-permission>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS">
+    </uses-permission>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS">
+    </uses-permission>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action
+                    android:name="android.intent.action.MAIN">
+                </action>
+                <category
+                    android:name="android.intent.category.LAUNCHER">
+                </category>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.DetailActivity"
+            android:label="@string/title_movie_details"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity">
+            </meta-data>
+        </activity>
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_settings"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity">
+            </meta-data>
+        </activity>
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.DataBaseProvider"
+            android:exported="true"
+            android:syncable="true">
+        </provider>
+
+        <!-- SyncAdapter's dummy authentication service -->
+        <service
+            android:name=".sync.SyncAuthenticatorService">
+            <intent-filter>
+                <action
+                    android:name="android.accounts.AccountAuthenticator">
+                </action>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator">
+            </meta-data>
+        </service>
+
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".sync.SyncService"
+            android:exported="true">
+            <intent-filter>
+                <action
+                    android:name="android.content.SyncAdapter">
+                </action>
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter">
+            </meta-data>
+        </service>
+
+    </application>
+
+</manifest>
