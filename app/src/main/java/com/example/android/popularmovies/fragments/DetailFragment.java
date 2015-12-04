@@ -11,8 +11,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +25,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.Utility;
@@ -35,9 +39,12 @@ import com.squareup.picasso.Picasso;
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
     public static final String LOG_TAG = DetailFragment.class.getSimpleName();
-    private static final String baseURL = "http://image.tmdb.org/t/p/w185/";
 
     public static final String DETAIL_URI = "URI";
+
+    private static final String POPULAR_MOVIE_SHARE_HASHTAG = " #PopularMovies";
+    private ShareActionProvider mShareActionProvider;
+    private String mMovieTrailer;
 
     TrailerAdapter mTrailerAdapter;
     ReviewAdapter mReviewAdapter;
@@ -46,6 +53,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private static final int DETAIL_LOADER = 0;
 
+    //projection for the movie detail
     private static final String[] DETAIL_COLUMNS = {
             MovieEntry.TABLE_NAME + "." + MovieEntry._ID,
             MovieEntry.COLUMN_MOVIE_ID,
@@ -57,18 +65,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             MovieEntry.COLUMN_FAVOURITE,
             MovieEntry.COLUMN_OVERVIEW};
 
+    //projection for trailers
     private static final String[] TRAILER_COLUMNS = {
             TrailerEntry.TABLE_NAME + "." + TrailerEntry._ID,
             TrailerEntry.COLUMN_MOVIE_ID,
             TrailerEntry.COLUMN_TRAILER_DETAIL,
             TrailerEntry.COLUMN_TRAILER_URL};
 
+    //projection for reviews
     private static final String[] REVIEW_COLUMNS = {
             ReviewEntry.TABLE_NAME + "." + ReviewEntry._ID,
             ReviewEntry.COLUMN_MOVIE_ID,
             ReviewEntry.COLUMN_AUTHOR,
             ReviewEntry.COLUMN_CONTENT};
 
+    //static column numbers required for the movie detail projection
     public final static int COL_MOVIE_ID = 1;
     public final static int COL_MOVIE_TITLE = 2;
     public final static int COL_MOVIE_POSTER_PATH = 3;
@@ -78,18 +89,23 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public final static int COL_MOVIE_FAVOURITE = 7;
     public final static int COL_MOVIE_OVERVEW = 8;
 
+    //static column numbers required for the movie trailers projection
     public final static int COL_TRAILER_DETAIL = 2;
     public final static int COL_TRAILER_URL = 3;
 
+    //static column numbers required for the movie reviews projection
     public final static int COL_REVIEW_AUTHOR = 2;
     public final static int COL_REVIEW_CONTENT = 3;
 
+    //Trailers query based on movie id
     private static final String sMovieTrailers =
             TrailerEntry.TABLE_NAME + "." + TrailerEntry.COLUMN_MOVIE_ID + " = ? ";
 
+    //Reviews query based on movie id
     private static final String sMovieReviews =
             ReviewEntry.TABLE_NAME + "." + ReviewEntry.COLUMN_MOVIE_ID + " = ? ";
 
+    //Objects in this fragment
     private TextView mTitle, mReleaseDate, mRunTime, mRating, mOverview;
     private ImageView mPoster;
     private Button mFavourite;
@@ -97,11 +113,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     int mMovieId;
 
+    //Constructor
     public DetailFragment()
     {
-
+        setHasOptionsMenu(true);
     }
 
+    //Find and assign variables to the objects for easier ref, also, assign events where required
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -133,6 +151,35 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        // Inflate menu resource file.
+        inflater.inflate(R.menu.menu_detail_fragment, menu);
+        // Locate MenuItem with ShareActionProvider
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if(mMovieTrailer != null)
+        {
+            Log.d(LOG_TAG, "OnCreateOptionsMenu: " + mMovieTrailer);
+            mShareActionProvider.setShareIntent(createShareTrailerIntent());
+        }
+    }
+
+    private Intent createShareTrailerIntent()
+    {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+//        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mMovieTrailer + "-" + POPULAR_MOVIE_SHARE_HASHTAG);
+//        return shareIntent;
+//        startActivity(shareIntent);
+        return shareIntent;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
@@ -149,6 +196,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return null;
     }
 
+    //populate objects in activity from completed dbase query
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data)
     {
@@ -157,7 +205,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mMovieId = data.getInt(COL_MOVIE_ID);
             String movieTitle = data.getString(COL_MOVIE_TITLE);
             mTitle.setText(movieTitle);
-            Picasso.with(getActivity()).load(baseURL + data.getString(COL_MOVIE_POSTER_PATH))
+            Picasso.with(getActivity()).load(getActivity().getString(R.string.movie_db_poster_url)
+                    + data.getString(COL_MOVIE_POSTER_PATH))
                     .into(mPoster);
             String releaseDate = data.getString(COL_MOVIE_RELEASE_DATE);
             mReleaseDate.setText(releaseDate);
@@ -170,11 +219,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mFavourite.setText(favouriteText);
             String overview = data.getString(COL_MOVIE_OVERVEW);
             mOverview.setText(overview);
+            //after main detail is complete, populate Trailers, then reviews
             populateExtras(TrailerEntry.TABLE_NAME, TRAILER_COLUMNS, sMovieTrailers, mTrailers);
             populateExtras(ReviewEntry.TABLE_NAME, REVIEW_COLUMNS, sMovieReviews, mReviews);
         }
     }
 
+    //set/reset int in dbase to determine if movie is in favourites
     void toggleFavourite()
     {
         int isFavourite = 0;
@@ -203,6 +254,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     {
     }
 
+    //used to get Trailer and Review Information from database
     void populateExtras(String uri, String[] projection, String selection, ListView listview)
     {
         DataBaseHelper mDBHelper = new DataBaseHelper(getActivity());
@@ -217,18 +269,29 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 {
                     mTrailerAdapter = new TrailerAdapter(getActivity(),cursor , 0);
                     listview.setAdapter(mTrailerAdapter);
-                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                    {
+                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
-                        {
+                        public void onItemClick(AdapterView<?> adapterView, View view,
+                                                int position, long l) {
                             Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                            if (cursor != null)
-                            {
+                            if (cursor != null) {
                                 openYouTubeTrailerLink(cursor.getString(COL_TRAILER_URL));
                             }
                         }
                     });
+                    Log.d(LOG_TAG, "Adding Share Intent");
+//                    get url of first trailer for share trailer intent
+                    if(cursor != null)
+                    {
+                        cursor.moveToFirst();
+                        mMovieTrailer = getActivity().getString(R.string.youtube_base_url)
+                                + cursor.getString(COL_TRAILER_URL);
+                        Log.d(LOG_TAG, "populateExtras: " + mMovieTrailer);
+                    }
+                    if (mShareActionProvider != null)
+                    {
+                        mShareActionProvider.setShareIntent(createShareTrailerIntent());
+                    }
                     break;
                 }
                 case ReviewEntry.TABLE_NAME:
@@ -252,6 +315,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         Utility.setListViewHeightBasedOnItems(listview);
     }
 
+    //Intent using trailer link to display trailer in youtube
     private void openYouTubeTrailerLink(String url)
     {
         Uri uri = Uri.parse(getActivity().getString(R.string.youtube_base_url) + url);
@@ -267,6 +331,4 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
     }
-
-
 }

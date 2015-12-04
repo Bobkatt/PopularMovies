@@ -12,6 +12,7 @@ import com.example.android.popularmovies.data.DataBaseContract.TrailerEntry;
 public class DataBaseHelper extends SQLiteOpenHelper
 {
     //Local Variables
+    // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 4;
     static final String DATABASE_NAME = "movie.db";
     //Constructor
@@ -23,6 +24,10 @@ public class DataBaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase)
     {
+        //Creates a table to hold the Movies returned from the api call
+        //Consists of Unique id for each row, movieId provided by the api, overview, release date,
+        //path to poster image, popularity rating, title of movie, vote average and run time
+        //favourite column used to indicate if is or not a favoutite movie of the user
         final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " +
                 MovieEntry.TABLE_NAME + " (" +
                 MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -38,6 +43,9 @@ public class DataBaseHelper extends SQLiteOpenHelper
                 "UNIQUE (" + MovieEntry.COLUMN_MOVIE_ID +
                 ") ON CONFLICT REPLACE);";
 
+        //Creates a table to hold all movie reviews for Movies returned from the api calls;
+        //Consists of a Unique id for each row, Id for movie the review is written for,
+        // author of the review and the content of the review
         final String SQL_CREATE_REVIEW_TABLE = "CREATE TABLE " +
                 ReviewEntry.TABLE_NAME + " (" +
                 ReviewEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -52,6 +60,9 @@ public class DataBaseHelper extends SQLiteOpenHelper
                 ", " + ReviewEntry.COLUMN_CONTENT +
                 ") ON CONFLICT REPLACE);";
 
+        //Creates a table to hold all movie trailers for Movies returned from the api calls;
+        //Consists of a Unique id for each row, Id for movie the trailer is for,
+        // url to trailer for previewing
         final String SQL_CREATE_TRAILER_TABLE = "CREATE TABLE " +
                 TrailerEntry.TABLE_NAME + " (" +
                 TrailerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -64,6 +75,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
                 "UNIQUE (" + TrailerEntry.COLUMN_TRAILER_URL +
                 ") ON CONFLICT REPLACE);";
 
+        //Create each table in turn
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_REVIEW_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_TRAILER_TABLE);

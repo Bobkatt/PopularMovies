@@ -16,8 +16,7 @@ import com.example.android.popularmovies.data.DataBaseContract.TrailerEntry;
 
 public class DataBaseProvider extends ContentProvider
 {
-    private final String LOG_TAG = DataBaseProvider.class.getSimpleName();
-
+    // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private DataBaseHelper mOpenHelper;
@@ -43,23 +42,29 @@ public class DataBaseProvider extends ContentProvider
 
         sMovieWithDetailQueryBuilder.setTables(MovieEntry.TABLE_NAME);
 
+        //This is an inner join which looks like
+        //trailer INNER JOIN movie ON trailer.movie_id = movie.movie_id
         sMovieTrailerQueryBuilder.setTables(MovieEntry.TABLE_NAME +
                 " INNER JOIN " + TrailerEntry.TABLE_NAME +
                 " ON " + TrailerEntry.TABLE_NAME + "." + TrailerEntry.COLUMN_MOVIE_ID +
                 " = " + MovieEntry.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID);
 
+        //Same as above but for movie reviews
         sMovieReviewQueryBuilder.setTables(MovieEntry.TABLE_NAME +
                 " INNER JOIN " + ReviewEntry.TABLE_NAME +
                 " ON " + ReviewEntry.TABLE_NAME + "." + ReviewEntry.COLUMN_MOVIE_ID +
                 " = " + MovieEntry.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID);
     }
 
+    //query string to get movie details
     private static final String sMovieDetailSelection =
             MovieEntry.TABLE_NAME + "." + MovieEntry.COLUMN_MOVIE_ID + " = ? ";
 
+    //query string to get movie trailers
     private static final String sMovieTrailerSelection =
             TrailerEntry.TABLE_NAME + "." + TrailerEntry.COLUMN_MOVIE_ID + " = ? ";
 
+    //query string to get movie reviews
     private static final String sMovieReviewSelection =
             ReviewEntry.TABLE_NAME + "." + ReviewEntry.COLUMN_MOVIE_ID + " = ? ";
 

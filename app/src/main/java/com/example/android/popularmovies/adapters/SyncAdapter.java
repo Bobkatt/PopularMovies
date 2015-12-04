@@ -57,6 +57,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         super(context, autoInitialize);
     }
 
+    //get JSON String for the 2 types of movie lists
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult)
@@ -65,6 +66,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         getApiString(STR_SORT_BY_URL, STR_RATING, "");
     }
 
+    //download Json string for the selected movie list from themoviedb.org
     public void getApiString(String baseUrl, String searchOption, String searchType)
     {
         HttpURLConnection urlConnection = null;
@@ -74,6 +76,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         try
         {
             Uri builtUri;
+            //build the query string based on the request
             switch(searchType)
             {
                 case STR_MOVIE_TIME:
@@ -135,6 +138,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
             }
             else
             {
+                //pass the result string to the correct routine for parsing into dbase
                 switch(searchType)
                 {
                     case STR_TRAILERS:
@@ -182,6 +186,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
+    //parse Json String into movie table, updating run time for each movie
     private void getMovieRunTimeFromJson (String movieJsonStr, int movieId) throws JSONException
     {
         final String OWM_RUNTIME = "runtime";
@@ -206,6 +211,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
+    //parse Json String into review table, adding reviews for each movie
     private void getReviewDataFromJson (String reviewJsonStr, int movieId) throws JSONException
     {
         final String OWM_RESULTS = "results";
@@ -246,6 +252,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
+    //parse Json String into trailers table, adding trailers for each movie
     private void getTrailerDataFromJson (String trailerJsonStr, int movieId) throws JSONException
     {
         final String OWM_RESULTS = "results";
@@ -283,6 +290,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
+    //parse Json String into movie table, adding row for each movie
     private void getMovieDataFromJson (String movieJsonStr) throws JSONException
     {
         final String OWM_RESULTS = "results";
@@ -349,6 +357,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
+    /**Helper method to schedule the sync adapter periodic execution*/
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime)
     {
         Account account = getSyncAccount(context);
@@ -367,6 +376,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
         }
     }
 
+    /**
+     * Helper method to have the sync adapter sync immediately
+     * @param context The context used to access the account service
+     */
     public static void syncImmediately(Context context)
     {
         Bundle bundle = new Bundle();
@@ -376,6 +389,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
                 context.getString(R.string.content_authority), bundle);
     }
 
+    /**
+     * Helper method to get the fake account to be used with SyncAdapter, or make a new one
+     * if the fake account doesn't exist yet.  If we make a new account, we call the
+     * onAccountCreated method so we can initialize things.
+     *
+     * @param context The context used to access the account service
+     * @return a fake account.
+     */
     public static Account getSyncAccount(Context context)
     {
         AccountManager accountManager = (AccountManager)
@@ -395,9 +416,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter
 
     private static void onAccountCreated(Account newAccount, Context context)
     {
+        /*
+         * Since we've created an account
+         */
         SyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        /*
+         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
+         */
         ContentResolver.setSyncAutomatically(newAccount,
                 context.getString(R.string.content_authority), true);
+        /*
+         * Finally, let's do a sync to get things started
+         */
         syncImmediately(context);
     }
 

@@ -1,6 +1,9 @@
 <resources>
+    <!-- Used in Action Bar, and in AndroidManifest to tell the device the name of this app.-->
     <string name="app_name">Popular Movies</string>
+    <!--By convention, "action" denotes that this String will be used as the label for an Action-->
     <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
     <string name="title_movie_details">Movie Detail</string>
     <string name="title_settings">Sort Order"</string>
     <string name="trailers_header">Trailers</string>
@@ -26,7 +29,7 @@
     <string name="youtube_base_url">https://www.youtube.com/watch?v=</string>
 
     <!-- Api Strings add an api key here before compiling and running-->
-    <string name="api_key"></string>
+    <string name="api_key">06f268cf6c27246a99f4199444a7215d</string>
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type">popularmovies.example.com</string>

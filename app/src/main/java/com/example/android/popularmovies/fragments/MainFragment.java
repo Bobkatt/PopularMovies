@@ -25,14 +25,17 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     private int mPosition = GridView.INVALID_POSITION;
     private static final String SELECTED_KEY = "selected_position";
     private static final int MOVIE_LOADER = 0;
+    //projection for popluating movie selection grid
     private static final String[] MOVIE_COLUMNS = {
             MovieEntry.TABLE_NAME + "." + MovieEntry._ID,
             MovieEntry.COLUMN_MOVIE_ID,
             MovieEntry.COLUMN_POSTER_PATH};
 
+    //static column numbers required for the movie selection projection
     public static final int COL_MOVIE_ID = 1;
     public static final int COL_MOVIE_POSTER_PATH = 2;
 
+    //Constructor
     public MainFragment()
     {
     }
@@ -49,6 +52,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         setHasOptionsMenu(true);
     }
 
+    //Find and assign variables to the objects for easier ref, also, assign events where required
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -100,6 +104,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         super.onSaveInstanceState(outState);
     }
 
+    //populate selection grid images from completed dbase query
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {

@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.fragments.DetailFragment;
 
+/**
+ * {@link TrailerAdapter} exposes a list of trailers for selected movie
+ * from a {@link android.database.Cursor} to a {@link android.widget.ListView}.
+ */
 public class TrailerAdapter extends CursorAdapter
 {
     public TrailerAdapter(Context context, Cursor cursor, int flags)
@@ -19,6 +23,7 @@ public class TrailerAdapter extends CursorAdapter
         super(context, cursor, flags);
     }
 
+    /**Cache of the children views for a trailers list item.*/
     public static class ViewHolder
     {
         public final ImageView mPlayTrailer;
@@ -40,6 +45,7 @@ public class TrailerAdapter extends CursorAdapter
         return view;
     }
 
+    /*This is where we fill-in the views with the contents of the cursor.*/
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {

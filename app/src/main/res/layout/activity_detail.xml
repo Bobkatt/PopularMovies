@@ -5,6 +5,6 @@
     android:id="@+id/movie_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity"
+    tools:context="com.example.android.popularmovies.activities.DetailActivity"
     tools:ignore="MergeRootFrame">
 </FrameLayout>

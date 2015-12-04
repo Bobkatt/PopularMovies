@@ -12,6 +12,10 @@ import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.fragments.MainFragment;
 import com.squareup.picasso.Picasso;
 
+/**
+ * {@link MainAdapter} exposes a list of movies by sort order
+ * from a {@link android.database.Cursor} to a {@link android.widget.GridView}.
+ */
 public class MainAdapter extends CursorAdapter
 {
     private String baseURL = mContext.getString(R.string.movie_db_poster_url);
@@ -21,6 +25,7 @@ public class MainAdapter extends CursorAdapter
         super(context, cursor, flags);
     }
 
+    /** Cache of the children views for a movie grid item. */
     public static class ViewHolder
     {
         public final ImageView moviePoster;
@@ -39,6 +44,7 @@ public class MainAdapter extends CursorAdapter
         return view;
     }
 
+    /*This is where we fill-in the views with the contents of the cursor.*/
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {

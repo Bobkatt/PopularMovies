@@ -11,6 +11,10 @@ import android.widget.TextView;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.fragments.DetailFragment;
 
+/**
+ * {@link ReviewAdapter} exposes a list of reiews for selected movie
+ * from a {@link android.database.Cursor} to a {@link android.widget.ListView}.
+ */
 public class ReviewAdapter  extends CursorAdapter
 {
     public ReviewAdapter(Context context, Cursor cursor, int flags)
@@ -18,6 +22,7 @@ public class ReviewAdapter  extends CursorAdapter
         super(context, cursor, flags);
     }
 
+    /**Cache of the children views for a reviews list item.*/
     public static class ViewHolder
     {
         public final TextView mAuthor;
@@ -39,6 +44,7 @@ public class ReviewAdapter  extends CursorAdapter
         return view;
     }
 
+    /*This is where we fill-in the views with the contents of the cursor.*/
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {
