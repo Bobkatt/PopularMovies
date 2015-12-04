@@ -29,7 +29,7 @@
     <string name="youtube_base_url">https://www.youtube.com/watch?v=</string>
 
     <!-- Api Strings add an api key here before compiling and running-->
-    <string name="api_key">06f268cf6c27246a99f4199444a7215d</string>
+    <string name="api_key"></string>
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type">popularmovies.example.com</string>
